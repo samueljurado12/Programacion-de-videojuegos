@@ -18,7 +18,7 @@ public class BallManager : MonoBehaviour
         //character.BallToChase = newBall;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if(spawnPositions.Length > 0)
         {
