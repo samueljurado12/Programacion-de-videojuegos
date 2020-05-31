@@ -7,18 +7,17 @@ public class BallManager : MonoBehaviour
     [SerializeField]
     private Vector3[] spawnPositions;
     [SerializeField]
-    private Transform character;
+    private PlayerMovement character;
     [SerializeField]
     private GameObject ball;
 
     public void SpawnNewBall()
     {
         Vector3 spawnPos = spawnPositions[Random.Range(0, spawnPositions.Length)];
-        GameObject newBall = Instantiate(ball, spawnPos, Quaternion.identity);
-        //character.BallToChase = newBall;
+        character.ChaseBall(Instantiate(ball, spawnPos, Quaternion.identity));
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if(spawnPositions.Length > 0)
         {
