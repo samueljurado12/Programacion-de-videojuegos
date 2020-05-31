@@ -31,15 +31,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var currentPosition = transform.position;
-        var positionToMove = path.corners[pathIndex];
-        var directionVector = new Vector3(currentPosition.x - positionToMove.x, currentPosition.y - positionToMove.y);
-
-        Rigidbody.AddForce(directionVector * Thrust);
-
-        if (currentPosition == positionToMove)
+        if(path.corners.Length > 0)
         {
-            pathIndex++;
+            var currentPosition = transform.localPosition;
+            var positionToMove = path.corners[pathIndex];
+            var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z).normalized;
+
+            if((Vector3.Distance(transform.localPosition, positionToMove) >= 0.5 || Rigidbody.velocity.sqrMagnitude < 3))
+            {
+                Rigidbody.AddForce(directionVector * Thrust);
+            } 
+
+            if (Vector3.Distance(transform.localPosition, positionToMove) < 0.5)
+            {
+                pathIndex++;
+            }
         }
     }
 
@@ -47,5 +53,10 @@ public class PlayerMovement : MonoBehaviour
     {
         BallToChase = ball;
         navmesh.CalculatePath(ball.transform.position, path);
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, path.corners[pathIndex]);
     }
 }
