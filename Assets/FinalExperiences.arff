@@ -1,0 +1,14 @@
+@relation FuncionCuadratica
+
+@attribute fx numeric
+@attribute fy numeric
+@attribute distance numeric
+
+@data
+17,12,28.640087
+17,17,24.560085
+17,22,20.480083
+14,24,19.115738
+20,24,19.115738
+17,26,19.115738
+17,26,19.115738
