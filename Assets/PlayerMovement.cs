@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private int pathIndex; 
     private Rigidbody Rigidbody;
     public float Thrust;
+    public float time;
+    public float lastTime;
 
     // Start is called before the first frame update
     void Start()
@@ -35,15 +37,16 @@ public class PlayerMovement : MonoBehaviour
         {
             var currentPosition = transform.localPosition;
             var positionToMove = path.corners[pathIndex];
-            var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z).normalized;
+            var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z);
 
             if((Vector3.Distance(transform.localPosition, positionToMove) >= 0.5 || Rigidbody.velocity.sqrMagnitude < 3))
             {
-                Rigidbody.AddForce(directionVector * Thrust);
+                Rigidbody.AddForce(directionVector * Thrust, ForceMode.Impulse);
             } 
 
-            if (Vector3.Distance(transform.localPosition, positionToMove) < 0.5)
+            if (Vector3.Distance(transform.localPosition, positionToMove) < 5 && Time.time > 0.5 + lastTime)
             {
+                lastTime = Time.time;
                 pathIndex++;
             }
         }
@@ -57,6 +60,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, path.corners[pathIndex]);
+        if(path.corners.Length > 0)
+        {
+            Gizmos.DrawLine(transform.position, path.corners[pathIndex]);
+        }
     }
 }
