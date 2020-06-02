@@ -7,6 +7,8 @@ public class Basket : MonoBehaviour
 
     [SerializeField]
     private BallManager ballManager;
+    [SerializeField]
+    private PruebaLanzamiento prueba;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +27,9 @@ public class Basket : MonoBehaviour
         if (other.CompareTag("Ball"))
         {
             Debug.Log("TRES PUNTOS COLEGA");
-            Destroy(other.gameObject);
-            ballManager.SpawnNewBall();
+            prueba.hasScored = true;
+            //Destroy(other.gameObject);
+            //ballManager.SpawnNewBall();
         }
     }
 }
