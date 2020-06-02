@@ -5,13 +5,13 @@ using UnityEngine.UI;
 using weka.classifiers.trees;
 using weka.classifiers.evaluation;
 using weka.core;
-using java.io;
 using java.lang;
 using java.util;
 using weka.classifiers.functions;
 using weka.classifiers;
 using weka.core.converters;
 using System.Threading;
+using System.IO;
 
 public class PruebaLanzamiento : MonoBehaviour
 {
@@ -24,7 +24,9 @@ public class PruebaLanzamiento : MonoBehaviour
     [SerializeField]
     private float maxValueFx, maxValueFy, minValueFx, minValueFy, step, bestFx, bestFy, targetDistance, shoot;
     [SerializeField]
-    private bool yah = false;
+    private bool yah = false, training;
+    [SerializeField]
+    private Vector3 maxPosition, minPosition;
     public bool hasScored;
 
     // Start is called before the first frame update
@@ -34,42 +36,38 @@ public class PruebaLanzamiento : MonoBehaviour
     }
 
     IEnumerator Learning() {
-        Time.timeScale = 7;
+        Time.timeScale = 5;
         cases = new weka.core.Instances(new java.io.FileReader("Assets/Experiences.arff"));
 
-        for(float Fx = minValueFx; Fx <= maxValueFx; Fx = Fx + step)                      //Bucle de planificación de la fuerza FX durante el entrenamiento
-            {
-            for(float Fy = minValueFy; Fy <= maxValueFy; Fy = Fy + step)                    //Bucle de planificación de la fuerza FY durante el entrenamiento
-            {
-                ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
-                Rigidbody rb = ballInstance.GetComponent<Rigidbody>();              //Crea una pelota física
-                rb.AddForce(new Vector3(0, Fy, 0) + transform.forward * Fx, ForceMode.Impulse);                //y la lanza con las fuerza Fx y Fy
-                yield return new WaitUntil(() => ((rb.transform.position.y < targetPoint.transform.position.y) && rb.velocity.y < 0));       //... y espera a que la pelota llegue al suelo
+        while(training) {
+            float fx, fy, px, pz;
+            fx = UnityEngine.Random.Range(minValueFx, maxValueFx);
+            fy = UnityEngine.Random.Range(minValueFy, maxValueFy);
+            px = UnityEngine.Random.Range(minPosition.x, maxPosition.x);
+            pz = UnityEngine.Random.Range(minPosition.z, maxPosition.z);
+            transform.position = new Vector3(px, transform.position.y, pz);
+            transform.LookAt(canasta.transform);
+            ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
+            Rigidbody rb = ballInstance.GetComponent<Rigidbody>();
+            rb.AddForce(new Vector3(0, fy, 0) + transform.forward * fx, ForceMode.Impulse);
+            yield return new WaitUntil(() => ((rb.transform.position.y < targetPoint.transform.position.y) && rb.velocity.y < 0));
 
-                if(hasScored) {
-                    print("ENTRENAMIENTO: con fuerza Fx " + Fx + " y Fy=" + Fy + " se alcanzó una distancia de " + Vector3.Distance(rb.transform.position, transform.position) + " m");
-                    Instance casoAaprender = new Instance(cases.numAttributes());
-                    casoAaprender.setDataset(cases);                          //crea un registro de experiencia
-                    casoAaprender.setValue(0, Fx);                                         //guarda los datos de las fuerzas Fx y Fy utilizadas
-                    casoAaprender.setValue(1, Fy);
-                    casoAaprender.setValue(2, Vector3.Distance(rb.transform.position, transform.position));
-                    cases.add(casoAaprender);                                 //guarda el registro en la lista casosEntrenamiento
+            if(hasScored) {
+                print("ENTRENAMIENTO: con fuerza Fx " + fx + " y Fy=" + fy + " se alcanzó una distancia de " + Vector3.Distance(rb.transform.position, transform.position) + " m");
+                Instance casoAaprender = new Instance(cases.numAttributes());
+                casoAaprender.setDataset(cases);
+                casoAaprender.setValue(0, fx);
+                casoAaprender.setValue(1, fy);
+                casoAaprender.setValue(2, Vector3.Distance(rb.transform.position, transform.position));
+                cases.add(casoAaprender);
+                using(StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff")) {
+                    w.WriteLine(casoAaprender);
                 }
-
-                rb.isKinematic = true; rb.GetComponent<Collider>().isTrigger = true;   //...opcional: paraliza la pelota
-                Destroy(ballInstance, 1);                                              //...opcional: destruye la pelota
-                hasScored = false;
-            }                                                                          //FIN bucle de lanzamientos con diferentes de fuerzas
+            }
+            rb.isKinematic = true; rb.GetComponent<Collider>().isTrigger = true;
+            Destroy(ballInstance, 1);
+            hasScored = false;
         }
-
-
-        File salida = new File("Assets/Experiences.arff");
-        if(!salida.exists())
-            System.IO.File.Create(salida.getAbsoluteFile().toString()).Dispose();
-        ArffSaver saver = new ArffSaver();
-        saver.setInstances(cases);
-        saver.setFile(salida);
-        saver.writeBatch();
 
         predictXForce = new M5P();
         cases.setClassIndex(0);
@@ -111,7 +109,7 @@ public class PruebaLanzamiento : MonoBehaviour
             }
 
             if(!((bestFx == 0) && (bestFy == 0))) {
-                if(hasScored) {
+                /*if(hasScored) {
                     Instance learningCase = new Instance(cases.numAttributes());
                     learningCase.setDataset(cases);
                     learningCase.setValue(0, bestFx);
@@ -125,7 +123,7 @@ public class PruebaLanzamiento : MonoBehaviour
                     saver.setDestination(outputFile);
                     saver.setFile(outputFile);
                     saver.writeBatch();
-                }
+                }*/
                 ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
                 Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
                 rigidbody.AddForce(new Vector3(0, bestFy, 0) + transform.forward * bestFx, ForceMode.Impulse);
