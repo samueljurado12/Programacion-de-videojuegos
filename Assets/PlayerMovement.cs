@@ -35,9 +35,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if(path.corners.Length > 0)
         {
-            var currentPosition = transform.localPosition;
+            var currentPosition = transform.position;
             var positionToMove = path.corners[pathIndex];
-            var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z);
+            var directionVector = Vector3.Lerp(currentPosition, positionToMove, Vector3.Distance(currentPosition, positionToMove) / 10);
 
             if((Vector3.Distance(transform.localPosition, positionToMove) >= 0.5 || Rigidbody.velocity.sqrMagnitude < 3) && Time.time > 0.1 + impulseLastTime)
             {
