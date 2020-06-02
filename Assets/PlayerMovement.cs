@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody>();
         navmesh = GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
-        pathIndex = 0;
+        pathIndex = 1;
     }
 
     // Update is called once per frame
@@ -37,15 +37,15 @@ public class PlayerMovement : MonoBehaviour
         {
             var currentPosition = transform.position;
             var positionToMove = path.corners[pathIndex];
-            var directionVector = Vector3.Lerp(currentPosition, positionToMove, Vector3.Distance(currentPosition, positionToMove) / 10);
+            var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z).normalized;
 
-            if((Vector3.Distance(transform.localPosition, positionToMove) >= 0.5 || Rigidbody.velocity.sqrMagnitude < 3) && Time.time > 0.1 + impulseLastTime)
+            if(Time.time > 0.1 + impulseLastTime)
             {
+                Rigidbody.AddForce(directionVector * (Vector3.Distance(currentPosition, positionToMove) - 1) * Thrust, ForceMode.Force);
                 impulseLastTime = Time.time;
-                Rigidbody.AddForce(directionVector * Thrust, ForceMode.Impulse);
             } 
 
-            if (Vector3.Distance(transform.localPosition, positionToMove) < 1 && Time.time > 0.5 + lastTime)
+            if (Vector3.Distance(transform.localPosition, positionToMove) < 2 && Time.time > 0.5 + lastTime)
             {
                 lastTime = Time.time;
                 pathIndex++;
@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ReturnToOriginalPosition()
     {
-        pathIndex = 0;
+        pathIndex = 1;
         navmesh.CalculatePath(originalPosition, path);
     }
 
