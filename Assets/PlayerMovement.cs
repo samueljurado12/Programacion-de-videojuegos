@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
@@ -13,8 +11,10 @@ public class PlayerMovement : MonoBehaviour
     private int pathIndex; 
     private Rigidbody Rigidbody;
     public float Thrust;
-    public float time;
-    public float lastTime;
+    private float time;
+    private float lastTime;
+    private float impulseLastTime;
+    public Vector3 originalPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -39,12 +39,13 @@ public class PlayerMovement : MonoBehaviour
             var positionToMove = path.corners[pathIndex];
             var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z);
 
-            if((Vector3.Distance(transform.localPosition, positionToMove) >= 0.5 || Rigidbody.velocity.sqrMagnitude < 3))
+            if((Vector3.Distance(transform.localPosition, positionToMove) >= 0.5 || Rigidbody.velocity.sqrMagnitude < 3) && Time.time > 0.1 + impulseLastTime)
             {
+                impulseLastTime = Time.time;
                 Rigidbody.AddForce(directionVector * Thrust, ForceMode.Impulse);
             } 
 
-            if (Vector3.Distance(transform.localPosition, positionToMove) < 5 && Time.time > 0.5 + lastTime)
+            if (Vector3.Distance(transform.localPosition, positionToMove) < 1 && Time.time > 0.5 + lastTime)
             {
                 lastTime = Time.time;
                 pathIndex++;
@@ -56,6 +57,12 @@ public class PlayerMovement : MonoBehaviour
     {
         BallToChase = ball;
         navmesh.CalculatePath(ball.transform.position, path);
+    }
+
+    public void ReturnToOriginalPosition()
+    {
+        pathIndex = 0;
+        navmesh.CalculatePath(originalPosition, path);
     }
 
     public void OnDrawGizmos()
