@@ -13,6 +13,7 @@ using weka.core.converters;
 using System.Threading;
 using System.IO;
 using System;
+using Debug = UnityEngine.Debug;
 
 public class PruebaLanzamiento : MonoBehaviour
 {
@@ -54,7 +55,7 @@ public class PruebaLanzamiento : MonoBehaviour
             ballInstance.GetComponent<Ball>().prueba = this;
             Destroy(ballInstance, 30);
             Rigidbody rb = ballInstance.GetComponent<Rigidbody>();
-            rb.AddForce(new Vector3(0, fy, 0) + transform.forward * fx, ForceMode.Impulse);
+            rb.AddForce(transform.up * fy + transform.forward * fx, ForceMode.Impulse);
             yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rb.transform.position.y < targetPoint.transform.position.y - 1) && rb.velocity.y < 0));
 
             if (ballInstance.GetComponent<Ball>().hasScored)
@@ -88,7 +89,8 @@ public class PruebaLanzamiento : MonoBehaviour
         yah = true;
         Time.timeScale = 1;
 
-        if(yah && shoot < 1) {
+        if (yah && shoot < 1)
+        {
             transform.LookAt(canasta.transform);
             targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));// + new Vector3(-0.1f, 1, 0));
 
@@ -96,22 +98,28 @@ public class PruebaLanzamiento : MonoBehaviour
             testCase.setDataset(cases);
             testCase.setValue(2, targetDistance);
 
-            bestFx = (float) predictXForce.classifyInstance(testCase);
+            bestFx = (float)predictXForce.classifyInstance(testCase);
 
             Instance testCase2 = new Instance(cases.numAttributes());
             testCase2.setDataset(cases);
             testCase2.setValue(0, bestFx);
             testCase2.setValue(2, targetDistance);
 
-            bestFy = (float) predictYForce.classifyInstance(testCase2);
+            bestFy = (float)predictYForce.classifyInstance(testCase2);
 
-            if(!((bestFx == 0) && (bestFy == 0))) {
+            Vector3 fuerza = transform.up * bestFy + transform.forward * bestFx;
+
+            Debug.Log($"Fuerza lanzada: {fuerza}");
+
+            if (!((bestFx == 0) && (bestFy == 0)))
+            {
                 ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
                 Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
-                rigidbody.AddForce(new Vector3(0, bestFy, 0) + transform.forward * bestFx, ForceMode.Impulse);
+                rigidbody.AddForce(fuerza, ForceMode.Impulse);
                 shoot++;
                 yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
-                if(ballInstance.GetComponent<Ball>().hasScored) {
+                if (ballInstance.GetComponent<Ball>().hasScored)
+                {
                     print("Ya he tirado, Fx: " + bestFx + ", Fy: " + bestFy);
                     Instance learningCase = new Instance(cases.numAttributes());
                     learningCase.setDataset(cases);
@@ -119,7 +127,8 @@ public class PruebaLanzamiento : MonoBehaviour
                     learningCase.setValue(1, bestFy);
                     learningCase.setValue(2, targetDistance);
                     cases.add(learningCase);
-                    using(StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff")) {
+                    using (StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff"))
+                    {
                         w.WriteLine(learningCase);
                     }
                 }
@@ -136,6 +145,6 @@ public class PruebaLanzamiento : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        
+
     }
 }
