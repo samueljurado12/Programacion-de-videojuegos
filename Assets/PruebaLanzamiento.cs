@@ -26,16 +26,50 @@ public class PruebaLanzamiento : MonoBehaviour
     [SerializeField]
     private float maxValueFx, maxValueFy, minValueFx, minValueFy, step, bestFx, bestFy, targetDistance, shoot;
     [SerializeField]
-    private bool yah = false, training;
+    private bool yah = false, training, testing;
     [SerializeField]
     private Vector3 maxPosition, minPosition;
-    public bool hasScored;
+
+    private int shotsTried, shotsMade;
+    private bool Testing_Running;
 
     // Start is called before the first frame update
     void Start()
     {
-        hasScored = false;
+        shotsTried = 0;
+        shotsMade = 0;
         StartCoroutine(Learning());
+    }
+
+    public IEnumerator Shoot()
+    {
+        Vector3 fuerza = transform.up * bestFy + transform.forward * bestFx;
+
+        Debug.Log($"Fuerza lanzada: {fuerza}");
+
+        if (!((bestFx == 0) && (bestFy == 0)))
+        {
+            shotsTried++;
+            ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
+            Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
+            rigidbody.AddForce(fuerza, ForceMode.Impulse);
+            shoot++;
+            yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
+            if (ballInstance.GetComponent<Ball>().hasScored)
+            {
+                shotsMade++;
+                //Instance learningCase = new Instance(cases.numAttributes());
+                //learningCase.setDataset(cases);
+                //learningCase.setValue(0, bestFx);
+                //learningCase.setValue(1, bestFy);
+                //learningCase.setValue(2, targetDistance);
+                //cases.add(learningCase);
+                //using (StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff"))
+                //{
+                //    w.WriteLine(learningCase);
+                //}
+            }
+        }
     }
 
     IEnumerator Learning()
@@ -74,7 +108,6 @@ public class PruebaLanzamiento : MonoBehaviour
             }
             rb.isKinematic = true; rb.GetComponent<Collider>().isTrigger = true;
             Destroy(ballInstance, 1);
-            hasScored = false;
         }
 
         predictXForce = new M5P();
@@ -85,55 +118,9 @@ public class PruebaLanzamiento : MonoBehaviour
         cases.setClassIndex(1);
         predictYForce.buildClassifier(cases);
 
-        hasScored = false;
         yah = true;
         Time.timeScale = 1;
 
-        if (yah && shoot < 1)
-        {
-            transform.LookAt(new Vector3(targetPoint.transform.position.x, 0, targetPoint.transform.position.z));
-            targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));// + new Vector3(-0.1f, 1, 0));
-
-            Instance testCase = new Instance(cases.numAttributes());
-            testCase.setDataset(cases);
-            testCase.setValue(2, targetDistance);
-
-            bestFx = (float)predictXForce.classifyInstance(testCase);
-
-            Instance testCase2 = new Instance(cases.numAttributes());
-            testCase2.setDataset(cases);
-            testCase2.setValue(0, bestFx);
-            testCase2.setValue(2, targetDistance);
-
-            bestFy = (float)predictYForce.classifyInstance(testCase2);
-
-            Vector3 fuerza = transform.up * bestFy + transform.forward * bestFx;
-
-            Debug.Log($"Fuerza lanzada: {fuerza}");
-
-            if (!((bestFx == 0) && (bestFy == 0)))
-            {
-                ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
-                Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
-                rigidbody.AddForce(fuerza, ForceMode.Impulse);
-                shoot++;
-                yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
-                if (ballInstance.GetComponent<Ball>().hasScored)
-                {
-                    print("Ya he tirado, Fx: " + bestFx + ", Fy: " + bestFy);
-                    Instance learningCase = new Instance(cases.numAttributes());
-                    learningCase.setDataset(cases);
-                    learningCase.setValue(0, bestFx);
-                    learningCase.setValue(1, bestFy);
-                    learningCase.setValue(2, targetDistance);
-                    cases.add(learningCase);
-                    using (StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff"))
-                    {
-                        w.WriteLine(learningCase);
-                    }
-                }
-            }
-        }
     }
 
     private void GetRandomPosition(ref float px, ref float pz)
@@ -145,6 +132,39 @@ public class PruebaLanzamiento : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (testing && !Testing_Running) StartCoroutine(Testing());
+    }
 
+    IEnumerator Testing()
+    {
+        Testing_Running = true;
+        float px = 0, pz = 0;
+        GetRandomPosition(ref px, ref pz);
+        transform.position = new Vector3(px, 0, pz);
+        yield return CalculateForces();
+        yield return Shoot();
+        Debug.Log($"Porcentaje currente: {shotsMade}/{shotsTried} - {(float)(shotsMade / shotsTried * 100)}");
+        Testing_Running = false;
+    }
+
+    IEnumerator CalculateForces()
+    {
+        transform.LookAt(new Vector3(targetPoint.transform.position.x, 0, targetPoint.transform.position.z));
+        targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));// + new Vector3(-0.1f, 1, 0));
+
+        Instance testCase = new Instance(cases.numAttributes());
+        testCase.setDataset(cases);
+        testCase.setValue(2, targetDistance);
+
+        bestFx = (float)predictXForce.classifyInstance(testCase);
+
+        Instance testCase2 = new Instance(cases.numAttributes());
+        testCase2.setDataset(cases);
+        testCase2.setValue(0, bestFx);
+        testCase2.setValue(2, targetDistance);
+
+        bestFy = (float)predictYForce.classifyInstance(testCase2);
+
+        yield return null;
     }
 }
