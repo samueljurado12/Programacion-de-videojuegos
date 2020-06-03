@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 330261312109052584}
   - component: {fileID: 1865020787541651735}
   - component: {fileID: 7592252994773327211}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Pelota
   m_TagString: Ball
   m_Icon: {fileID: 0}

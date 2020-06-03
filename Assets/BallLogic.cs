@@ -27,6 +27,7 @@ public class BallLogic : MonoBehaviour
     {
         if(other.gameObject.tag.Equals("Player") && notLikeThatSongOfDaftPunk == 0)
         {
+            gameObject.layer = LayerMask.NameToLayer("Pelota");
             notLikeThatSongOfDaftPunk++;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             gameObject.GetComponent<Rigidbody>().useGravity = false;

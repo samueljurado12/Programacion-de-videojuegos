@@ -7710,6 +7710,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pelota
       objectReference: {fileID: 0}
+    - target: {fileID: 330261312109052587, guid: 969116650e08d6240ba0038787442af1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 330261312109052588, guid: 969116650e08d6240ba0038787442af1,
         type: 3}
       propertyPath: m_LocalPosition.x
