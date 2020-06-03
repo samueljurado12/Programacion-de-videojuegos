@@ -587,8 +587,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BallToChase: {fileID: 0}
   Thrust: 0.075
-  originalPosition: {x: 40, y: 0, z: 0}
-  ballHolder: {fileID: 0}
+  returnPosition: {x: 0, y: 0, z: 0}
+  ballHolder: {fileID: 1233482912904954843}
 --- !u!54 &-2568799518909444368
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -647,6 +647,7 @@ MonoBehaviour:
   testing: 0
   maxPosition: {x: 40, y: 0, z: 7.5}
   minPosition: {x: 25, y: 0, z: -7.5}
+  holdedBall: {fileID: 0}
   hasScored: 0
 --- !u!65 &9126300964045215558
 BoxCollider:
@@ -673,6 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebffec7f67033f745bcf8e27d44f2928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
 --- !u!1 &6825737407073305711
 GameObject:
   m_ObjectHideFlags: 0
