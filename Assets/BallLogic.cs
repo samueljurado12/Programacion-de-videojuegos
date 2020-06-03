@@ -4,7 +4,6 @@ public class BallLogic : MonoBehaviour
 {
 
     private int notLikeThatSongOfDaftPunk; // one more time
-    private GameObject playerObject;
 
     // Start is called before the first frame update
     void Start()
@@ -14,28 +13,24 @@ public class BallLogic : MonoBehaviour
 
     void Update()
     {
-        if(playerObject != null)
-        {
-            transform.position = playerObject.transform.position + new Vector3(0, 1.5f, 1);
-        }
     }
 
-    public void PickedUpByPlayer(GameObject gameObject)
+    private void Thrown()
     {
-        playerObject = gameObject;
+        transform.parent = null;
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
-
-    public void BallHasBeenThrown()
-    {
-        playerObject = null;
-    }
-
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag.Equals("Player") && notLikeThatSongOfDaftPunk == 0)
         {
             notLikeThatSongOfDaftPunk++;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            transform.parent = other.gameObject.GetComponent<PlayerMovement>().ballHolder;
+            transform.localPosition = Vector3.zero;
             other.gameObject.GetComponent<PlayerMovement>().ReturnToOriginalPosition();
         }
     }

@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private float lastTime;
     private float impulseLastTime;
     public Vector3 originalPosition;
+    public Transform ballHolder;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
             var currentPosition = transform.position;
             var positionToMove = path.corners[pathIndex];
             var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z).normalized;
+            transform.LookAt(positionToMove);
 
             if(Time.time > 0.1 + impulseLastTime)
             {
@@ -63,14 +65,6 @@ public class PlayerMovement : MonoBehaviour
     {
         pathIndex = 1;
         navmesh.CalculatePath(originalPosition, path);
-    }
-
-    public void OnTriggerEnter(Collision collision)
-    {
-        if(collision.gameObject.tag.Equals("Ball"))
-        {
-            BallToChase.GetComponent<BallLogic>().PickedUpByPlayer(gameObject);
-        }
     }
 
     public void OnDrawGizmos()

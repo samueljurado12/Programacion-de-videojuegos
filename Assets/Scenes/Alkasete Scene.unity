@@ -4546,6 +4546,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6943987571369257772, guid: d0ec70b25d563e94caed932e47bb11dc,
         type: 3}
+      propertyPath: spawnPositions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6943987571369257772, guid: d0ec70b25d563e94caed932e47bb11dc,
+        type: 3}
       propertyPath: spawnPositions.Array.data[3].x
       value: -17.7
       objectReference: {fileID: 0}
@@ -4562,7 +4567,7 @@ PrefabInstance:
     - target: {fileID: 6943987571369257772, guid: d0ec70b25d563e94caed932e47bb11dc,
         type: 3}
       propertyPath: spawnPositions.Array.data[0].x
-      value: -7.48
+      value: 26.71
       objectReference: {fileID: 0}
     - target: {fileID: 6943987571369257772, guid: d0ec70b25d563e94caed932e47bb11dc,
         type: 3}
