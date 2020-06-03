@@ -2,8 +2,9 @@
 
 public class BallLogic : MonoBehaviour
 {
-    private FixedJoint fixedJoint;
+
     private int notLikeThatSongOfDaftPunk; // one more time
+    private GameObject playerObject;
 
     // Start is called before the first frame update
     void Start()
@@ -13,8 +14,22 @@ public class BallLogic : MonoBehaviour
 
     void Update()
     {
-        
+        if(playerObject != null)
+        {
+            transform.position = playerObject.transform.position + new Vector3(0, 1.5f, 1);
+        }
     }
+
+    public void PickedUpByPlayer(GameObject gameObject)
+    {
+        playerObject = gameObject;
+    }
+
+    public void BallHasBeenThrown()
+    {
+        playerObject = null;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {

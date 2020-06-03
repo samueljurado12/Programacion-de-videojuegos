@@ -65,6 +65,14 @@ public class PlayerMovement : MonoBehaviour
         navmesh.CalculatePath(originalPosition, path);
     }
 
+    public void OnTriggerEnter(Collision collision)
+    {
+        if(collision.gameObject.tag.Equals("Ball"))
+        {
+            BallToChase.GetComponent<BallLogic>().PickedUpByPlayer(gameObject);
+        }
+    }
+
     public void OnDrawGizmos()
     {
         if(path.corners.Length > 0)
