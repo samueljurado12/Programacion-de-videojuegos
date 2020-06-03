@@ -527,6 +527,7 @@ GameObject:
   - component: {fileID: 8874535199880329024}
   - component: {fileID: 997637228045081175}
   - component: {fileID: 9126300964045215558}
+  - component: {fileID: 2911223229843964163}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -642,7 +643,6 @@ MonoBehaviour:
   bestFy: 0
   targetDistance: 0
   shoot: 0
-  yah: 0
   training: 0
   testing: 0
   maxPosition: {x: 40, y: 0, z: 7.5}
@@ -661,6 +661,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2911223229843964163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6035856552842301761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebffec7f67033f745bcf8e27d44f2928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6825737407073305711
 GameObject:
   m_ObjectHideFlags: 0
