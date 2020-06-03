@@ -63,8 +63,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void ReturnToOriginalPosition()
     {
-        pathIndex = 1;
         navmesh.CalculatePath(originalPosition, path);
+        pathIndex = 0;
     }
 
     public void OnDrawGizmos()

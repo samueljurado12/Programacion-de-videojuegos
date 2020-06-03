@@ -3,6 +3,7 @@
 public class BallLogic : MonoBehaviour
 {
 
+    public PruebaLanzamiento prueba;
     private int notLikeThatSongOfDaftPunk; // one more time
 
     // Start is called before the first frame update
@@ -33,5 +34,11 @@ public class BallLogic : MonoBehaviour
             transform.localPosition = Vector3.zero;
             other.gameObject.GetComponent<PlayerMovement>().ReturnToOriginalPosition();
         }
+    }
+
+
+    public void NotifyController()
+    {
+        prueba.hasScored = true;
     }
 }
