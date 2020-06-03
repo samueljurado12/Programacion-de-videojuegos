@@ -4573,12 +4573,17 @@ PrefabInstance:
     - target: {fileID: 6943987571369257772, guid: d0ec70b25d563e94caed932e47bb11dc,
         type: 3}
       propertyPath: spawnPositions.Array.data[0].x
-      value: 26.71
+      value: 34.41
       objectReference: {fileID: 0}
     - target: {fileID: 6943987571369257772, guid: d0ec70b25d563e94caed932e47bb11dc,
         type: 3}
       propertyPath: spawnPositions.Array.data[1].x
       value: 0.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 6943987571369257772, guid: d0ec70b25d563e94caed932e47bb11dc,
+        type: 3}
+      propertyPath: spawnPositions.Array.data[0].z
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 6943987571369257773, guid: d0ec70b25d563e94caed932e47bb11dc,
         type: 3}
@@ -10678,7 +10683,7 @@ PrefabInstance:
     - target: {fileID: -2568799518909444368, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
       propertyPath: m_Mass
-      value: 0.1
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -2568799518909444368, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
@@ -10708,7 +10713,7 @@ PrefabInstance:
     - target: {fileID: 2573538452034772755, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
       propertyPath: Thrust
-      value: 0.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2812114312601956307, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
