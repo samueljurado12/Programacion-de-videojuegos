@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1650559719698179355}
-  - component: {fileID: 602166987628922552}
   - component: {fileID: 7561435923671086572}
+  - component: {fileID: 2077280803643409867}
   m_Layer: 0
   m_Name: Canasta
   m_TagString: Untagged
@@ -35,20 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!136 &602166987628922552
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2358952208314881800}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 10.037036
-  m_Height: 26.803091
-  m_Direction: 0
-  m_Center: {x: -0.1890862, y: 97.7651, z: 43.11845}
 --- !u!114 &7561435923671086572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +47,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9f8060c397cfa448957401efe43ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballManager: {fileID: 0}
+  prueba: {fileID: 0}
+--- !u!65 &2077280803643409867
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358952208314881800}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 31.5, y: 2, z: 27.9}
+  m_Center: {x: 0, y: 110, z: 42.9}
 --- !u!1 &3433905938321432069
 GameObject:
   m_ObjectHideFlags: 0

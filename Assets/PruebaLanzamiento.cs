@@ -55,7 +55,7 @@ public class PruebaLanzamiento : MonoBehaviour
             Destroy(ballInstance, 30);
             Rigidbody rb = ballInstance.GetComponent<Rigidbody>();
             rb.AddForce(new Vector3(0, fy, 0) + transform.forward * fx, ForceMode.Impulse);
-            yield return new WaitUntil(() => ((rb.transform.position.y < targetPoint.transform.position.y) && rb.velocity.y < 0));
+            yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rb.transform.position.y < targetPoint.transform.position.y) && rb.velocity.y < 0));
 
             if (ballInstance.GetComponent<Ball>().hasScored)
             {
