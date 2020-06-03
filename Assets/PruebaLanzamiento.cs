@@ -33,6 +33,8 @@ public class PruebaLanzamiento : MonoBehaviour
     private int shotsTried, shotsMade;
     private bool Testing_Running;
 
+    public bool hasScored;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,15 +51,18 @@ public class PruebaLanzamiento : MonoBehaviour
 
         if (!((bestFx == 0) && (bestFy == 0)))
         {
+            hasScored = false;
             shotsTried++;
             ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
             Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
+            ballInstance.GetComponent<Ball>().prueba = this;
             rigidbody.AddForce(fuerza, ForceMode.Impulse);
             shoot++;
-            yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
-            if (ballInstance.GetComponent<Ball>().hasScored)
+            yield return new WaitUntil(() => (hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
+            if (hasScored)
             {
                 shotsMade++;
+                hasScored = false;
                 //Instance learningCase = new Instance(cases.numAttributes());
                 //learningCase.setDataset(cases);
                 //learningCase.setValue(0, bestFx);
@@ -69,6 +74,7 @@ public class PruebaLanzamiento : MonoBehaviour
                 //    w.WriteLine(learningCase);
                 //}
             }
+            Destroy(ballInstance, 1);
         }
     }
 
@@ -90,9 +96,9 @@ public class PruebaLanzamiento : MonoBehaviour
             Destroy(ballInstance, 30);
             Rigidbody rb = ballInstance.GetComponent<Rigidbody>();
             rb.AddForce(transform.up * fy + transform.forward * fx, ForceMode.Impulse);
-            yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rb.transform.position.y < targetPoint.transform.position.y - 1) && rb.velocity.y < 0));
+            yield return new WaitUntil(() => (hasScored || (rb.transform.position.y < targetPoint.transform.position.y - 1) && rb.velocity.y < 0));
 
-            if (ballInstance.GetComponent<Ball>().hasScored)
+            if (hasScored)
             {
                 print("ENTRENAMIENTO: con fuerza Fx " + fx + " y Fy=" + fy + " se alcanzó una distancia de " + Vector3.Distance(rb.transform.position, transform.position) + " m");
                 Instance learningCase = new Instance(cases.numAttributes());

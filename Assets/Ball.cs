@@ -5,5 +5,10 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public PruebaLanzamiento prueba;
-    public bool hasScored;
+
+    public void NotifyController()
+    {
+        prueba.hasScored = true;
+    }
+    
 }

@@ -27,8 +27,8 @@ public class Basket : MonoBehaviour
         if (other.CompareTag("Ball"))
         {
             Debug.Log("TRES PUNTOS COLEGA");
-            other.gameObject.GetComponent<Ball>().hasScored = true;
-            Destroy(other.gameObject, 1);
+            other.GetComponent<Ball>().NotifyController();
+            Destroy(other.gameObject);
             //ballManager.SpawnNewBall();
         }
     }
