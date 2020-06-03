@@ -28,6 +28,7 @@ public class StateController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(!shootController.training && !shootController.testing)
         StateBehaviour();
     }
 

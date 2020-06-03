@@ -41,7 +41,7 @@ public class BallLogic : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(character.state == StateController.PlayerState.WAITING)
+        if(character.state == StateController.PlayerState.WAITING && !prueba.testing && !prueba.training)
         {
             FindObjectOfType<BallManager>().SpawnNewBall();
         }
