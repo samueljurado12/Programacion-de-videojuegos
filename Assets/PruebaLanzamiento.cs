@@ -22,7 +22,7 @@ public class PruebaLanzamiento : MonoBehaviour
     [SerializeField]
     private weka.core.Instances cases;
     [SerializeField]
-    private GameObject ball, ballInstance, targetPoint, canasta;
+    private GameObject ball, ballInstance, targetPoint;
     [SerializeField]
     private float maxValueFx, maxValueFy, minValueFx, minValueFy, step, bestFx, bestFy, targetDistance, shoot;
     [SerializeField]
@@ -50,7 +50,7 @@ public class PruebaLanzamiento : MonoBehaviour
             fy = UnityEngine.Random.Range(minValueFy, maxValueFy);
             GetRandomPosition(ref px, ref pz);
             transform.position = new Vector3(px, 0, pz);
-            transform.LookAt(canasta.transform);
+            transform.LookAt(new Vector3(targetPoint.transform.position.x, 0, targetPoint.transform.position.z));
             ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
             ballInstance.GetComponent<Ball>().prueba = this;
             Destroy(ballInstance, 30);
@@ -91,7 +91,7 @@ public class PruebaLanzamiento : MonoBehaviour
 
         if (yah && shoot < 1)
         {
-            transform.LookAt(canasta.transform);
+            transform.LookAt(new Vector3(targetPoint.transform.position.x, 0, targetPoint.transform.position.z));
             targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));// + new Vector3(-0.1f, 1, 0));
 
             Instance testCase = new Instance(cases.numAttributes());
