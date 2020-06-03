@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
@@ -13,8 +11,10 @@ public class PlayerMovement : MonoBehaviour
     private int pathIndex; 
     private Rigidbody Rigidbody;
     public float Thrust;
-    public float time;
-    public float lastTime;
+    private float time;
+    private float lastTime;
+    private float impulseLastTime;
+    public Vector3 originalPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody>();
         navmesh = GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
-        pathIndex = 0;
+        pathIndex = 1;
     }
 
     // Update is called once per frame
@@ -35,16 +35,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if(path.corners.Length > 0)
         {
-            var currentPosition = transform.localPosition;
+            var currentPosition = transform.position;
             var positionToMove = path.corners[pathIndex];
-            var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z);
+            var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z).normalized;
 
-            if((Vector3.Distance(transform.localPosition, positionToMove) >= 0.5 || Rigidbody.velocity.sqrMagnitude < 3))
+            if(Time.time > 0.1 + impulseLastTime)
             {
-                Rigidbody.AddForce(directionVector * Thrust, ForceMode.Impulse);
+                Rigidbody.AddForce(directionVector * (Vector3.Distance(currentPosition, positionToMove) - 1) * Thrust, ForceMode.Force);
+                impulseLastTime = Time.time;
             } 
 
-            if (Vector3.Distance(transform.localPosition, positionToMove) < 5 && Time.time > 0.5 + lastTime)
+            if (Vector3.Distance(transform.localPosition, positionToMove) < 2 && Time.time > 0.5 + lastTime)
             {
                 lastTime = Time.time;
                 pathIndex++;
@@ -56,6 +57,12 @@ public class PlayerMovement : MonoBehaviour
     {
         BallToChase = ball;
         navmesh.CalculatePath(ball.transform.position, path);
+    }
+
+    public void ReturnToOriginalPosition()
+    {
+        pathIndex = 1;
+        navmesh.CalculatePath(originalPosition, path);
     }
 
     public void OnDrawGizmos()

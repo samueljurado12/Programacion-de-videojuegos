@@ -120,8 +120,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 330261312109052587}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3185a24a539d192488a9e79335c39e41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prueba: {fileID: 0}
-  hasScored: 0
+  m_Script: {fileID: 11500000, guid: 920be51d10bbfbd4eb2459215bc91bb4, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!65 &7592252994773327211
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330261312109052587}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
