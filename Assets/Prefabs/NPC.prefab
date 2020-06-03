@@ -586,9 +586,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BallToChase: {fileID: 0}
-  Thrust: 0.75
+  Thrust: 0.075
   returnPosition: {x: 0, y: 0, z: 0}
-  ballHolder: {fileID: 0}
+  ballHolder: {fileID: 1233482912904954843}
 --- !u!54 &-2568799518909444368
 Rigidbody:
   m_ObjectHideFlags: 0

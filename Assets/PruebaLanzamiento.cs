@@ -26,12 +26,13 @@ public class PruebaLanzamiento : MonoBehaviour
     [SerializeField]
     private float maxValueFx, maxValueFy, minValueFx, minValueFy, step, bestFx, bestFy, targetDistance, shoot;
     [SerializeField]
-    private bool yah = false, training, testing;
+    private bool training, testing;
     [SerializeField]
     private Vector3 maxPosition, minPosition;
 
     private int shotsTried, shotsMade;
     private bool Testing_Running;
+    public BallLogic holdedBall;
 
     public bool hasScored;
 
@@ -41,6 +42,12 @@ public class PruebaLanzamiento : MonoBehaviour
         shotsTried = 0;
         shotsMade = 0;
         StartCoroutine(Learning());
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (testing && !Testing_Running) StartCoroutine(Testing());
     }
 
     public IEnumerator Shoot()
@@ -53,9 +60,11 @@ public class PruebaLanzamiento : MonoBehaviour
         {
             hasScored = false;
             shotsTried++;
-            ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
+            ballInstance = holdedBall?.gameObject ?? Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
             Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
             ballInstance.GetComponent<Ball>().prueba = this;
+            rigidbody.isKinematic = false;
+            rigidbody.useGravity = true;
             rigidbody.AddForce(fuerza, ForceMode.Impulse);
             shoot++;
             yield return new WaitUntil(() => (hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
@@ -77,6 +86,8 @@ public class PruebaLanzamiento : MonoBehaviour
             Destroy(ballInstance, 1);
         }
     }
+
+    #region Learning Script
 
     IEnumerator Learning()
     {
@@ -115,7 +126,13 @@ public class PruebaLanzamiento : MonoBehaviour
             rb.isKinematic = true; rb.GetComponent<Collider>().isTrigger = true;
             Destroy(ballInstance, 1);
         }
+        GenerateSystem();
+    }
 
+    #endregion
+
+    private void GenerateSystem()
+    {
         predictXForce = new M5P();
         cases.setClassIndex(0);
         predictXForce.buildClassifier(cases);
@@ -124,23 +141,16 @@ public class PruebaLanzamiento : MonoBehaviour
         cases.setClassIndex(1);
         predictYForce.buildClassifier(cases);
 
-        yah = true;
         Time.timeScale = 1;
-
     }
-
-    private void GetRandomPosition(ref float px, ref float pz)
+    
+    public void GetRandomPosition(ref float px, ref float pz)
     {
         px = UnityEngine.Random.Range(minPosition.x, maxPosition.x);
         pz = UnityEngine.Random.Range(minPosition.z, maxPosition.z);
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (testing && !Testing_Running) StartCoroutine(Testing());
-    }
-
+    #region Testing AI
     IEnumerator Testing()
     {
         Testing_Running = true;
@@ -152,11 +162,12 @@ public class PruebaLanzamiento : MonoBehaviour
         Debug.Log($"Porcentaje currente: {shotsMade}/{shotsTried} - {(float)(shotsMade / shotsTried * 100)}");
         Testing_Running = false;
     }
+    #endregion
 
-    IEnumerator CalculateForces()
+    public IEnumerator CalculateForces()
     {
         transform.LookAt(new Vector3(targetPoint.transform.position.x, 0, targetPoint.transform.position.z));
-        targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));// + new Vector3(-0.1f, 1, 0));
+        targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));
 
         Instance testCase = new Instance(cases.numAttributes());
         testCase.setDataset(cases);
