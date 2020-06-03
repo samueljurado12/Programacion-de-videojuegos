@@ -3,7 +3,7 @@
 public class BallLogic : MonoBehaviour
 {
 
-    public PruebaLanzamiento prueba;
+    public StephenCurry prueba;
     private int notLikeThatSongOfDaftPunk; // one more time
     private StateController character;
 
@@ -13,11 +13,12 @@ public class BallLogic : MonoBehaviour
         notLikeThatSongOfDaftPunk = 0;
     }
 
-    private void Thrown()
+    public void Thrown()
     {
         transform.parent = null;
         gameObject.GetComponent<Rigidbody>().isKinematic = false;
         gameObject.GetComponent<Rigidbody>().useGravity = true;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,7 +30,7 @@ public class BallLogic : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             transform.parent = other.gameObject.GetComponent<PlayerMovement>().ballHolder;
-            other.gameObject.GetComponent<PruebaLanzamiento>().holdedBall = this;
+            other.gameObject.GetComponent<StephenCurry>().holdedBall = this;
             gameObject.GetComponent<BoxCollider>().enabled = false;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;

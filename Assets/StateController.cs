@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StateController : MonoBehaviour
 {
@@ -10,21 +11,30 @@ public class StateController : MonoBehaviour
     public PlayerState state;
 
     private PlayerMovement pMovement;
-    private PruebaLanzamiento shootController;
+    private StephenCurry shootController;
     private bool waitingCoroutine;
+
+    [SerializeField]
+    private Text currentSpeedMultiplier, shotPercentage;
 
     // Start is called before the first frame update
     void Start()
     {
         state = PlayerState.WAITING;
         pMovement = GetComponent<PlayerMovement>();
-        shootController = GetComponent<PruebaLanzamiento>();
+        shootController = GetComponent<StephenCurry>();
         waitingCoroutine = false;
     }
 
     private void FixedUpdate()
     {
         StateBehaviour();
+    }
+
+    public void speedUpdate(float value)
+    {
+        currentSpeedMultiplier.text = $"Current speed: {value}x";
+        Time.timeScale = value;
     }
 
     private void StateBehaviour()
@@ -36,9 +46,10 @@ public class StateController : MonoBehaviour
                 break;
             case StateController.PlayerState.RETURNING:
                 pMovement.Move();
-                if (Vector3.Distance(transform.position, pMovement.returnPosition) < 0.5)
+                if (Vector3.Distance(transform.position, pMovement.returnPosition) < 2)
                 {
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                     switchShoot();
                 }
                 break;
@@ -78,7 +89,14 @@ public class StateController : MonoBehaviour
         waitingCoroutine = true;
         yield return shootController.CalculateForces();
         yield return shootController.Shoot();
+        UpdatePct();
         if (state != PlayerState.CHASING) state = PlayerState.WAITING;
         waitingCoroutine = false;
+    }
+
+    private void UpdatePct()
+    {
+        shotPercentage.text = $"{shootController.shotsMade}/{shootController.shotsTried} - " +
+            $"{Math.Round(shootController.shotsMade / shootController.shotsTried, 2)*100}%";
     }
 }

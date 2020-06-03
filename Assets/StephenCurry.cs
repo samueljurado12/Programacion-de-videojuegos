@@ -15,7 +15,7 @@ using System.IO;
 using System;
 using Debug = UnityEngine.Debug;
 
-public class PruebaLanzamiento : MonoBehaviour
+public class StephenCurry : MonoBehaviour
 {
     [SerializeField]
     private weka.classifiers.trees.M5P predictXForce, predictYForce, predictDistance;
@@ -30,7 +30,7 @@ public class PruebaLanzamiento : MonoBehaviour
     [SerializeField]
     private Vector3 maxPosition, minPosition;
 
-    private int shotsTried, shotsMade;
+    public float shotsTried, shotsMade;
     private bool Testing_Running;
     public BallLogic holdedBall;
 
@@ -62,9 +62,8 @@ public class PruebaLanzamiento : MonoBehaviour
             shotsTried++;
             ballInstance = holdedBall?.gameObject ?? Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
             Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
-            ballInstance.GetComponent<Ball>().prueba = this;
-            rigidbody.isKinematic = false;
-            rigidbody.useGravity = true;
+            holdedBall.prueba = this;
+            holdedBall.Thrown();
             rigidbody.AddForce(fuerza, ForceMode.Impulse);
             shoot++;
             yield return new WaitUntil(() => (hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
@@ -103,7 +102,7 @@ public class PruebaLanzamiento : MonoBehaviour
             transform.position = new Vector3(px, 0, pz);
             transform.LookAt(new Vector3(targetPoint.transform.position.x, 0, targetPoint.transform.position.z));
             ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
-            ballInstance.GetComponent<Ball>().prueba = this;
+            ballInstance.GetComponent<BallLogic>().prueba = this;
             Destroy(ballInstance, 30);
             Rigidbody rb = ballInstance.GetComponent<Rigidbody>();
             rb.AddForce(transform.up * fy + transform.forward * fx, ForceMode.Impulse);

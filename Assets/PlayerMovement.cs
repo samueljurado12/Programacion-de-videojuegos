@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move()
     {
-        if (pathIndex < path.corners.Length && path.corners.Length > 0)
+        if (path.corners.Length > 0)
         {
             var currentPosition = transform.position;
             var positionToMove = path.corners[pathIndex];
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
                 impulseLastTime = Time.time;
             }
 
-            if (Vector3.Distance(transform.localPosition, positionToMove) < 2 && Time.time > 0.5 + lastTime)
+            if (Vector3.Distance(transform.localPosition, positionToMove) < 1.5 && Time.time > 0.5 + lastTime)
             {
                 lastTime = Time.time;
                 pathIndex++;
