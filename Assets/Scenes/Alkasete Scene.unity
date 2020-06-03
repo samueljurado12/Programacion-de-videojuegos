@@ -1888,12 +1888,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245710573}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &246613875 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1233482912904954843, guid: a616a167eae77304db168c1c736940cb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1487127466}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &260833647
 GameObject:
   m_ObjectHideFlags: 0
@@ -10680,16 +10674,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -2568799518909444368, guid: a616a167eae77304db168c1c736940cb,
-        type: 3}
-      propertyPath: m_Mass
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: -2568799518909444368, guid: a616a167eae77304db168c1c736940cb,
-        type: 3}
-      propertyPath: m_Drag
-      value: 0.025
-      objectReference: {fileID: 0}
     - target: {fileID: 617203479404881405, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
       propertyPath: m_Layer
@@ -10704,16 +10688,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2573538452034772755, guid: a616a167eae77304db168c1c736940cb,
-        type: 3}
-      propertyPath: ballHolder
-      value: 
-      objectReference: {fileID: 246613875}
-    - target: {fileID: 2573538452034772755, guid: a616a167eae77304db168c1c736940cb,
-        type: 3}
-      propertyPath: Thrust
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2812114312601956307, guid: a616a167eae77304db168c1c736940cb,
         type: 3}

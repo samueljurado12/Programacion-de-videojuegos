@@ -36,7 +36,7 @@ public class StateController : MonoBehaviour
                 break;
             case StateController.PlayerState.RETURNING:
                 pMovement.Move();
-                if (Vector3.Distance(transform.localPosition, pMovement.returnPosition) < 0.5)
+                if (Vector3.Distance(transform.position, pMovement.returnPosition) < 0.5)
                 {
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     switchShoot();

@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour
     private float impulseLastTime;
     public Vector3 returnPosition;
     public Transform ballHolder;
-    bool returning = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,12 +24,6 @@ public class PlayerMovement : MonoBehaviour
         navmesh = GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
         pathIndex = 1;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.Log(path.corners.Length);
     }
 
     public void Move()
