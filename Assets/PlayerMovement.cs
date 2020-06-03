@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     private float lastTime;
     private float impulseLastTime;
     public Vector3 originalPosition;
+    public Transform ballHolder;
+    bool xD = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,11 +35,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(path.corners.Length > 0)
+        if(pathIndex < path.corners.Length && path.corners.Length > 0)
         {
             var currentPosition = transform.position;
             var positionToMove = path.corners[pathIndex];
             var directionVector = new Vector3(positionToMove.x - currentPosition.x, positionToMove.y - currentPosition.y, positionToMove.z - currentPosition.z).normalized;
+            transform.LookAt(positionToMove);
 
             if(Time.time > 0.1 + impulseLastTime)
             {
@@ -50,19 +53,29 @@ public class PlayerMovement : MonoBehaviour
                 lastTime = Time.time;
                 pathIndex++;
             }
+
+            
+        } else if (xD)
+        {
+            if (Vector3.Distance(transform.localPosition, originalPosition) < 0.5)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
         }
     }
 
     public void ChaseBall(GameObject ball)
     {
+        xD = false;
         BallToChase = ball;
         navmesh.CalculatePath(ball.transform.position, path);
     }
 
     public void ReturnToOriginalPosition()
     {
-        pathIndex = 1;
+        xD = true;
         navmesh.CalculatePath(originalPosition, path);
+        pathIndex = 0;
     }
 
     public void OnDrawGizmos()
