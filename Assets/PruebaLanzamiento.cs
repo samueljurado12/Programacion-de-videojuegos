@@ -55,20 +55,20 @@ public class PruebaLanzamiento : MonoBehaviour
             Destroy(ballInstance, 30);
             Rigidbody rb = ballInstance.GetComponent<Rigidbody>();
             rb.AddForce(new Vector3(0, fy, 0) + transform.forward * fx, ForceMode.Impulse);
-            yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rb.transform.position.y < targetPoint.transform.position.y) && rb.velocity.y < 0));
+            yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rb.transform.position.y < targetPoint.transform.position.y - 1) && rb.velocity.y < 0));
 
             if (ballInstance.GetComponent<Ball>().hasScored)
             {
                 print("ENTRENAMIENTO: con fuerza Fx " + fx + " y Fy=" + fy + " se alcanzó una distancia de " + Vector3.Distance(rb.transform.position, transform.position) + " m");
-                Instance casoAaprender = new Instance(cases.numAttributes());
-                casoAaprender.setDataset(cases);
-                casoAaprender.setValue(0, fx);
-                casoAaprender.setValue(1, fy);
-                casoAaprender.setValue(2, Vector3.Distance(rb.transform.position, transform.position));
-                cases.add(casoAaprender);
+                Instance learningCase = new Instance(cases.numAttributes());
+                learningCase.setDataset(cases);
+                learningCase.setValue(0, fx);
+                learningCase.setValue(1, fy);
+                learningCase.setValue(2, Vector3.Distance(rb.transform.position, transform.position));
+                cases.add(learningCase);
                 using (StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff"))
                 {
-                    w.WriteLine(casoAaprender);
+                    w.WriteLine(learningCase);
                 }
             }
             rb.isKinematic = true; rb.GetComponent<Collider>().isTrigger = true;
@@ -84,8 +84,47 @@ public class PruebaLanzamiento : MonoBehaviour
         cases.setClassIndex(1);
         predictYForce.buildClassifier(cases);
 
+        hasScored = false;
         yah = true;
         Time.timeScale = 1;
+
+        if(yah && shoot < 1) {
+            transform.LookAt(canasta.transform);
+            targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));// + new Vector3(-0.1f, 1, 0));
+
+            Instance testCase = new Instance(cases.numAttributes());
+            testCase.setDataset(cases);
+            testCase.setValue(2, targetDistance);
+
+            bestFx = (float) predictXForce.classifyInstance(testCase);
+
+            Instance testCase2 = new Instance(cases.numAttributes());
+            testCase2.setDataset(cases);
+            testCase2.setValue(0, bestFx);
+            testCase2.setValue(2, targetDistance);
+
+            bestFy = (float) predictYForce.classifyInstance(testCase2);
+
+            if(!((bestFx == 0) && (bestFy == 0))) {
+                ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
+                Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
+                rigidbody.AddForce(new Vector3(0, bestFy, 0) + transform.forward * bestFx, ForceMode.Impulse);
+                shoot++;
+                yield return new WaitUntil(() => (ballInstance.GetComponent<Ball>().hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
+                if(ballInstance.GetComponent<Ball>().hasScored) {
+                    print("Ya he tirado, Fx: " + bestFx + ", Fy: " + bestFy);
+                    Instance learningCase = new Instance(cases.numAttributes());
+                    learningCase.setDataset(cases);
+                    learningCase.setValue(0, bestFx);
+                    learningCase.setValue(1, bestFy);
+                    learningCase.setValue(2, targetDistance);
+                    cases.add(learningCase);
+                    using(StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff")) {
+                        w.WriteLine(learningCase);
+                    }
+                }
+            }
+        }
     }
 
     private void GetRandomPosition(ref float px, ref float pz)
@@ -97,48 +136,6 @@ public class PruebaLanzamiento : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (yah && shoot < 1)
-        {
-            hasScored = false;
-            transform.LookAt(canasta.transform);
-            targetDistance = Vector3.Distance(targetPoint.transform.position, transform.position + new Vector3(-0.1f, 1, 0));// + new Vector3(-0.1f, 1, 0));
-
-            Instance testCase = new Instance(cases.numAttributes());
-            testCase.setDataset(cases);
-            testCase.setValue(2, targetDistance);
-
-            bestFx = (float)predictXForce.classifyInstance(testCase);
-
-            Instance testCase2 = new Instance(cases.numAttributes());
-            testCase2.setDataset(cases);
-            testCase2.setValue(0, bestFx);
-            testCase2.setValue(2, targetDistance);
-
-            bestFy = (float)predictYForce.classifyInstance(testCase2);
-
-            if (!((bestFx == 0) && (bestFy == 0)))
-            {
-                /*if(hasScored) {
-                    Instance learningCase = new Instance(cases.numAttributes());
-                    learningCase.setDataset(cases);
-                    learningCase.setValue(0, bestFx);
-                    learningCase.setValue(1, bestFy);
-                    learningCase.setValue(2, targetDistance);
-                    cases.add(learningCase);
-                    File outputFile = new File("Assets/Experiences.arff");
-                    if(!outputFile.exists()) System.IO.File.Create(outputFile.getAbsoluteFile().toString()).Dispose();
-                    ArffSaver saver = new ArffSaver();
-                    saver.setInstances(cases);
-                    saver.setDestination(outputFile);
-                    saver.setFile(outputFile);
-                    saver.writeBatch();
-                }*/
-                ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
-                Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
-                rigidbody.AddForce(new Vector3(0, bestFy, 0) + transform.forward * bestFx, ForceMode.Impulse);
-                shoot++;
-                print("Ya he tirado, Fx: " + bestFx + ", Fy: " + bestFy);
-            }
-        }
+        
     }
 }
