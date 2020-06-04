@@ -47,7 +47,7 @@ public class StateController : MonoBehaviour
                 break;
             case StateController.PlayerState.RETURNING:
                 pMovement.Move();
-                if (Vector3.Distance(transform.position, pMovement.returnPosition) < 2)
+                if (Vector3.Distance(transform.position, pMovement.positionToGo) < 2)
                 {
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -75,7 +75,7 @@ public class StateController : MonoBehaviour
     {
         float px = 0, pz = 0;
         shootController.GetRandomPosition(ref px, ref pz);
-        pMovement.returnPosition = new Vector3(px, 0, pz);
+        pMovement.positionToGo = new Vector3(px, 0, pz);
         pMovement.SelectReturnPosition();
         state = PlayerState.RETURNING;
     }

@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 64f16e2cc62d1c048ab52ea2f8384ba3, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 0c6c10231c486f74088966f1a815d7e6, type: 2}
 --- !u!1 &13942137
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,7 +968,6 @@ GameObject:
   m_Component:
   - component: {fileID: 123576991}
   - component: {fileID: 123576993}
-  - component: {fileID: 123576992}
   m_Layer: 0
   m_Name: Main Camera (1)
   m_TagString: MainCamera
@@ -990,14 +989,6 @@ Transform:
   m_Father: {fileID: 391062772}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 32.18, y: 31, z: 0}
---- !u!81 &123576992
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123576990}
-  m_Enabled: 1
 --- !u!20 &123576993
 Camera:
   m_ObjectHideFlags: 0
@@ -1007,8 +998,8 @@ Camera:
   m_GameObject: {fileID: 123576990}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.08966714, g: 0.1024905, b: 0.122641504, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1330,7 +1321,6 @@ GameObject:
   m_Component:
   - component: {fileID: 193421347}
   - component: {fileID: 193421345}
-  - component: {fileID: 193421346}
   m_Layer: 0
   m_Name: Camera (1)
   m_TagString: Untagged
@@ -1347,8 +1337,8 @@ Camera:
   m_GameObject: {fileID: 193421344}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.08966714, g: 0.1024905, b: 0.122641504, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1381,14 +1371,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &193421346
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 193421344}
-  m_Enabled: 1
 --- !u!4 &193421347
 Transform:
   m_ObjectHideFlags: 0
@@ -3174,7 +3156,6 @@ GameObject:
   m_Component:
   - component: {fileID: 394259216}
   - component: {fileID: 394259214}
-  - component: {fileID: 394259215}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -3191,8 +3172,8 @@ Camera:
   m_GameObject: {fileID: 394259213}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.08966714, g: 0.1024905, b: 0.122641504, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3225,14 +3206,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &394259215
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 394259213}
-  m_Enabled: 1
 --- !u!4 &394259216
 Transform:
   m_ObjectHideFlags: 0
@@ -8110,7 +8083,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -187.3, y: -137}
+  m_AnchoredPosition: {x: -232, y: -159}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1068662029
@@ -9373,7 +9346,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1217561122}
   - component: {fileID: 1217561121}
-  - component: {fileID: 1217561120}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9381,14 +9353,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1217561120
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217561119}
-  m_Enabled: 1
 --- !u!20 &1217561121
 Camera:
   m_ObjectHideFlags: 0
@@ -9398,8 +9362,8 @@ Camera:
   m_GameObject: {fileID: 1217561119}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.08966714, g: 0.1024905, b: 0.122641504, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -10525,7 +10489,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -242.38, y: -115.53}
+  m_AnchoredPosition: {x: -287.08002, y: -137.53}
   m_SizeDelta: {x: 49.83, y: 22.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1383350360
@@ -11508,7 +11472,7 @@ PrefabInstance:
     - target: {fileID: -2568799518909444368, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
       propertyPath: m_Mass
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 617203479404881405, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
@@ -11528,7 +11492,7 @@ PrefabInstance:
     - target: {fileID: 2573538452034772755, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
       propertyPath: Thrust
-      value: 0.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2812114312601956307, guid: a616a167eae77304db168c1c736940cb,
         type: 3}
@@ -11884,7 +11848,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -224.4, y: 127.5}
+  m_AnchoredPosition: {x: -277, y: 157}
   m_SizeDelta: {x: 63.32, y: 23.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1523365243
@@ -12678,8 +12642,8 @@ Camera:
   m_GameObject: {fileID: 1641141223}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.08966714, g: 0.1024905, b: 0.122641504, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -12970,7 +12934,7 @@ HingeJoint:
   m_UseSpring: 1
   m_Spring:
     spring: 0.1
-    damper: 1
+    damper: 0.5
     targetPosition: 0
   m_UseMotor: 0
   m_Motor:
@@ -14176,8 +14140,8 @@ MonoBehaviour:
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
