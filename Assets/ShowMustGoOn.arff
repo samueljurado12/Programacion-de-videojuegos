@@ -1,0 +1,7 @@
+@relation FuncionCuadratica
+
+@attribute fx numeric
+@attribute fy numeric
+@attribute distance numeric
+
+@data

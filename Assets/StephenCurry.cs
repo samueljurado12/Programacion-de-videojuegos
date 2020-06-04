@@ -26,16 +26,15 @@ public class StephenCurry : MonoBehaviour
     [SerializeField]
     private float maxValueFx, maxValueFy, minValueFx, minValueFy, step, bestFx, bestFy, targetDistance, shoot;
     [SerializeField]
-    private bool training, testing;
-    [SerializeField]
     private Vector3 maxPosition, minPosition;
 
-    public float shotsTried, shotsMade;
     private bool Testing_Running;
+
+    public bool training, testing;
+    public float shotsTried, shotsMade;
     public BallLogic holdedBall;
-
     public bool hasScored;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -54,17 +53,25 @@ public class StephenCurry : MonoBehaviour
     {
         Vector3 fuerza = transform.up * bestFy + transform.forward * bestFx;
 
-        Debug.Log($"Fuerza lanzada: {fuerza}");
-
         if (!((bestFx == 0) && (bestFy == 0)))
         {
             hasScored = false;
             shotsTried++;
             ballInstance = holdedBall?.gameObject ?? Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
+            if (testing)
+            {
+                holdedBall = ballInstance.GetComponent<BallLogic>();
+            }
             Rigidbody rigidbody = ballInstance.GetComponent<Rigidbody>();
             holdedBall.prueba = this;
             holdedBall.Thrown();
             rigidbody.AddForce(fuerza, ForceMode.Impulse);
+
+            if (testing)
+            {
+                holdedBall = null;
+            }
+
             shoot++;
             yield return new WaitUntil(() => (hasScored || (rigidbody.transform.position.y < targetPoint.transform.position.y - 1) && rigidbody.velocity.y < 0));
             if (hasScored)
@@ -91,7 +98,8 @@ public class StephenCurry : MonoBehaviour
     IEnumerator Learning()
     {
         Time.timeScale = 5;
-        cases = new weka.core.Instances(new java.io.FileReader("Assets/Experiences.arff"));
+        string file = training ? "Assets/ShowMustGoOn.arff" : "Assets/Experiences.arff";
+        cases = new weka.core.Instances(new java.io.FileReader(file));
 
         while (training)
         {
@@ -103,9 +111,10 @@ public class StephenCurry : MonoBehaviour
             transform.LookAt(new Vector3(targetPoint.transform.position.x, 0, targetPoint.transform.position.z));
             ballInstance = Instantiate(ball, transform.position + new Vector3(-0.1f, 1, 0), transform.rotation) as GameObject;
             ballInstance.GetComponent<BallLogic>().prueba = this;
-            Destroy(ballInstance, 30);
+            ballInstance.GetComponent<BallLogic>().Thrown();
             Rigidbody rb = ballInstance.GetComponent<Rigidbody>();
             rb.AddForce(transform.up * fy + transform.forward * fx, ForceMode.Impulse);
+            Destroy(ballInstance, 10);
             yield return new WaitUntil(() => (hasScored || (rb.transform.position.y < targetPoint.transform.position.y - 1) && rb.velocity.y < 0));
 
             if (hasScored)
@@ -117,12 +126,12 @@ public class StephenCurry : MonoBehaviour
                 learningCase.setValue(1, fy);
                 learningCase.setValue(2, Vector3.Distance(rb.transform.position, transform.position));
                 cases.add(learningCase);
-                using (StreamWriter w = System.IO.File.AppendText("Assets/Experiences.arff"))
+                using (StreamWriter w = System.IO.File.AppendText(file))
                 {
                     w.WriteLine(learningCase);
                 }
             }
-            rb.isKinematic = true; rb.GetComponent<Collider>().isTrigger = true;
+            rb.isKinematic = true; rb.GetComponent<SphereCollider>().isTrigger = true;
             Destroy(ballInstance, 1);
         }
         GenerateSystem();
