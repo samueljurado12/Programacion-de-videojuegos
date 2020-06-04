@@ -969,7 +969,7 @@ GameObject:
   - component: {fileID: 123576991}
   - component: {fileID: 123576993}
   m_Layer: 0
-  m_Name: Main Camera (1)
+  m_Name: IzquierdaCanasta
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1322,7 +1322,7 @@ GameObject:
   - component: {fileID: 193421347}
   - component: {fileID: 193421345}
   m_Layer: 0
-  m_Name: Camera (1)
+  m_Name: IzquierdaLaberinto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3157,7 +3157,7 @@ GameObject:
   - component: {fileID: 394259216}
   - component: {fileID: 394259214}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: DerechaLaberinto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9347,7 +9347,7 @@ GameObject:
   - component: {fileID: 1217561122}
   - component: {fileID: 1217561121}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: DerechaCanasta
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12625,9 +12625,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1641141226}
   - component: {fileID: 1641141224}
-  - component: {fileID: 1641141225}
   m_Layer: 0
-  m_Name: Main Camera (2)
+  m_Name: CamaraLaberinto
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12676,14 +12675,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1641141225
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641141223}
-  m_Enabled: 1
 --- !u!4 &1641141226
 Transform:
   m_ObjectHideFlags: 0
